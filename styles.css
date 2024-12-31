@@ -67,7 +67,7 @@ a.button {
     text-align: center;
 }
 
-@media screen and (max-height: 639px) {
+@media screen and (max-height: 604px) {
     .screen {
         flex-direction:inherit;
         justify-content: center;
@@ -90,9 +90,10 @@ a.button {
     box-sizing: border-box;
     position: relative;
 }
-@media screen and (max-height: 639px) {
+@media screen and (max-height: 604px) {
     .screen-inner {
-        height: 500px;
+        max-width: 320px;
+        height: 540px;
     }
 }
 
@@ -105,12 +106,6 @@ a.button {
 .logo {
     width: 100%;
     height: auto;
-}
-@media screen and (max-height: 639px) {
-    .logo {
-        width: 64%;
-        height: auto;
-    }
 }
 
 /* 副題 */
@@ -227,9 +222,8 @@ a.button {
     width: 100%;
     margin-bottom: 12px;
 }
-@media screen and (max-height: 639px) {
+@media screen and (max-height: 604px) {
     .rank-image {
-        width: 64%;
         margin-bottom: 8px;
     }
 }
