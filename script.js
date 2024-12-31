@@ -28,6 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("submit-button").addEventListener("click", checkAnswer);
   retryButton.addEventListener("click", restartGame);
 
+      // トグルスイッチのイベントリスナーを設定
+      toggleSwitch.addEventListener("click", () => {
+        toggleSwitch.classList.toggle("active");
+        questionCount = toggleSwitch.classList.contains("active") ? 10 : 1; // アクティブなら10問、非アクティブなら1問
+    });
+
   function showScreen(screen) {
       startScreen.classList.remove("active");
       countdownScreen.classList.remove("active");
@@ -87,60 +93,107 @@ document.addEventListener("DOMContentLoaded", () => {
   function stopTimer() {
       clearInterval(timerInterval);
   }
+  
 
   function loadQuestion() {
-      if (currentQuestionIndex < selectedQuestions.length) {
-          questionElement.textContent = selectedQuestions[currentQuestionIndex];
-          progressTitle.textContent = `${currentQuestionIndex + 1}/${selectedQuestions.length}`;
-          answerInput.value = "";
-          answerInput.focus();
-          startTime = new Date();
-          deleteCount = 0; // 次の問題に進む際にDeleteキー回数をリセット
-      } else {
-          stopTimer();
-          endGame();
-      }
+    if (currentQuestionIndex < selectedQuestions.length) {
+        questionElement.textContent = selectedQuestions[currentQuestionIndex];
+        progressTitle.textContent = `${currentQuestionIndex + 1}/${selectedQuestions.length}`;
+        answerInput.value = "";
+        answerInput.focus();
+        startTime = new Date();
+        deleteCount = 0; // 次の問題に進む際にDeleteキー回数をリセット
+    } else {
+        stopTimer();
+        endGame();
+    }
+}
+
+  function calculateScore(characterCount, actualTime) {
+    const averageTimePerChar = 0.5; // 1文字に期待される平均時間 (秒)
+    const baseTime = characterCount * averageTimePerChar; // 基準時間
+    const score = Math.min((baseTime / actualTime) * 100, 100); // 最大100点
+    return Math.max(score, 0); // 最小0点
+}
+
+function checkAnswer(event) {
+  event.preventDefault();
+
+  const userAnswer = answerInput.value.trim();
+  const questionText = selectedQuestions[currentQuestionIndex];
+  const endTime = new Date();
+  const elapsedTime = (endTime - startTime) / 1000; // 経過時間 (秒)
+
+  if (userAnswer === questionText) {
+      correctCount++;
+      const characterCount = questionText.length;
+      const score = calculateScore(characterCount, elapsedTime); // スコア計算
+      scores.push(score);
+      currentQuestionIndex++;
+      loadQuestion();
+  } else {
+      scores.push(0); // 不正解時はスコア0
   }
+}
 
-  function checkAnswer(event) {
-      event.preventDefault();
+function endGame() {
+  const gameEndTime = new Date();
+  const totalGameTime = ((gameEndTime - gameStartTime) / 1000).toFixed(2);
 
-      const userAnswer = answerInput.value.trim();
-      const questionText = selectedQuestions[currentQuestionIndex];
-      const endTime = new Date();
-      const elapsedTime = (endTime - startTime) / 1000;
+  const totalScore = scores.reduce((acc, score) => acc + score, 0);
+  const averageScore = totalScore / selectedQuestions.length || 0;
+  const { rank, caption, id } = calculateRank(averageScore); // ランク、キャプション、IDを取得
 
-      if (userAnswer === questionText) {
-          correctCount++;
-          const characterCount = questionText.length;
-          const score = calculateScore(characterCount, elapsedTime);
-          scores.push(score);
-          currentQuestionIndex++;
-          loadQuestion();
-      } else {
-          scores.push(0);
-      }
-  }
+  showScreen(resultScreen);
 
-  function endGame() {
-      const gameEndTime = new Date();
-      const totalGameTime = ((gameEndTime - gameStartTime) / 1000).toFixed(2);
+  // 結果コンテンツをクリア
+  const resultContent = document.getElementById("result-content");
+  resultContent.innerHTML = "";
 
-      const totalScore = scores.reduce((acc, score) => acc + score, 0);
-      const averageScore = totalScore / selectedQuestions.length || 0;
+  // ランク画像を生成
+  const rankImage = document.createElement("img");
+  rankImage.id = "result-image";
+  rankImage.className = "rank-image";
+  rankImage.src = `images/score${id}.jpg`; // IDに基づいて画像ファイル名を生成
+  rankImage.alt = rank;
+  resultContent.appendChild(rankImage);
 
-      showScreen(resultScreen);
+  // ランクタイトルを生成
+  const rankTitle = document.createElement("p");
+  rankTitle.className = "title";
+  rankTitle.textContent = `${rank}`;
+  resultContent.appendChild(rankTitle);
 
-      resultContent.innerHTML = `
-          <p>スコア: ${averageScore.toFixed(2)}点</p>
-          <p>総タイム: ${totalGameTime}秒</p>
-      `;
-  }
+  // キャプションを生成
+  const rankCaption = document.createElement("p");
+  rankCaption.className = "caption";
+  rankCaption.textContent = caption;
+  resultContent.appendChild(rankCaption);
+
+  // スコア表示を生成
+  const scoreDisplay = document.createElement("p");
+  scoreDisplay.className = "score-display";
+  scoreDisplay.textContent = `スコア: ${averageScore.toFixed(2)}点`;
+  resultContent.appendChild(scoreDisplay);
+
+  // タイム表示を生成
+  const timeDisplay = document.createElement("p");
+  timeDisplay.className = "time-display";
+  timeDisplay.textContent = `総タイム: ${totalGameTime}秒`;
+  resultContent.appendChild(timeDisplay);
+
+  // シェアボタン設定
+  setupResultShare(rank, averageScore.toFixed(2));
+}
+
 
   function showGameOver() {
-      stopTimer();
-      showScreen(gameOverScreen);
-  }
+    stopTimer();
+    showScreen(gameOverScreen);
+
+    const gameOverURL = generateGameOverShareText();
+    document.getElementById("share-gameover-button").setAttribute("href", gameOverURL);
+}
 
   // Deleteキーでの入力回数をカウント
   answerInput.addEventListener("input", (event) => {
@@ -293,5 +346,51 @@ function generateExplosion(x, y, count) {
   }
 }
 
+function generateResultShareText(rank, score) {
+  const caption = rankCaptions[rank] || "キーボードを叩き、未知の可能性を追い求めた！"; // デフォルトメッセージを設定
+
+  const baseURL = "https://twitter.com/intent/tweet";
+  const text = `🎉【称号: ${rank}】🎉\nスコア: ${score}点🔥\n${caption} あなたも挑戦してこの称号を超えてみませんか？\n👇\n#キーボードクラッシャー #タイピングゲーム #ChatGPTで作成\nhttps://kumalog110.github.io/KeyboardCrasher/`;
+  return `${baseURL}?text=${encodeURIComponent(text)}`;
+}
+
+function generateGameOverShareText() {
+  const baseURL = "https://twitter.com/intent/tweet";
+  const text = `💥【称号: 壊れた希望】💥\nキーボードの神が見放した…しかし再挑戦の道は残されている！\n👇\n#キーボードクラッシャー #タイピングゲーム #ChatGPTで作成\nhttps://kumalog110.github.io/KeyboardCrasher/`;
+  return `${baseURL}?text=${encodeURIComponent(text)}`;
+}
+
+function setupResultShare(rank, score) {
+  const resultURL = generateResultShareText(rank, score);
+  const shareButton = document.getElementById("share-result-button");
+  shareButton.setAttribute("href", resultURL);
+  shareButton.setAttribute("target", "_blank"); // 新しいタブで開く
+}
+
+function calculateRank(averageScore) {
+  if (averageScore >= 95) return { rank: "仕事を救いし英雄", id: 100 };
+  if (averageScore >= 90) return { rank: "キーボード救世主", id: 90 };
+  if (averageScore >= 80) return { rank: "全てを打ち破る者", id: 80 };
+  if (averageScore >= 70) return { rank: "入力の狂気", id: 70 };
+  if (averageScore >= 60) return { rank: "疲れ知らずの打撃者", id: 60 };
+  if (averageScore >= 50) return { rank: "過労キーボード", id: 50 };
+  if (averageScore >= 40) return { rank: "叩きのバイト", id: 40 };
+  if (averageScore >= 30) return { rank: "キーボードの苦痛", id: 30 };
+  if (averageScore >= 20) return { rank: "破壊の見習い", id: 20 };
+  return { rank: "壊れた希望", id: 10 };
+}
+
+const rankCaptions = {
+  "仕事を救いし英雄": "完璧な打鍵で仕事も未来も切り開く！",
+  "キーボード救世主": "叩きの中にも希望が見える。",
+  "全てを打ち破る者": "叩く力が仕事を生む！",
+  "入力の狂気": "壊れそうなキーボードに慈悲はない！",
+  "疲れ知らずの打撃者": "その手を止めるな！",
+  "過労キーボード": "キーボードが泣いてる、手加減を！",
+  "叩きのバイト": "叩き方を学びつつある！",
+  "キーボードの苦痛": "壊すだけでは仕事は進まないぞ！",
+  "破壊の見習い": "まだ道半ば、もっと叩け！",
+  "壊れた希望": "ただ叩けばよい？それではダメだ！"
+};
 
 });
