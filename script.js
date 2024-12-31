@@ -368,16 +368,16 @@ function setupResultShare(rank, score) {
 }
 
 function calculateRank(averageScore) {
-  if (averageScore >= 95) return { rank: "仕事を救いし英雄", id: 100 };
-  if (averageScore >= 90) return { rank: "キーボード救世主", id: 90 };
-  if (averageScore >= 80) return { rank: "全てを打ち破る者", id: 80 };
-  if (averageScore >= 70) return { rank: "入力の狂気", id: 70 };
-  if (averageScore >= 60) return { rank: "疲れ知らずの打撃者", id: 60 };
-  if (averageScore >= 50) return { rank: "過労キーボード", id: 50 };
-  if (averageScore >= 40) return { rank: "叩きのバイト", id: 40 };
-  if (averageScore >= 30) return { rank: "キーボードの苦痛", id: 30 };
-  if (averageScore >= 20) return { rank: "破壊の見習い", id: 20 };
-  return { rank: "壊れた希望", id: 10 };
+  if (averageScore >= 95) return { rank: "仕事を救いし英雄", id: 100, caption: rankCaptions["仕事を救いし英雄"] };
+  if (averageScore >= 90) return { rank: "キーボード救世主", id: 90, caption: rankCaptions["キーボード救世主"] };
+  if (averageScore >= 80) return { rank: "全てを打ち破る者", id: 80, caption: rankCaptions["全てを打ち破る者"] };
+  if (averageScore >= 70) return { rank: "入力の狂気", id: 70, caption: rankCaptions["入力の狂気"] };
+  if (averageScore >= 60) return { rank: "疲れ知らずの打撃者", id: 60, caption: rankCaptions["疲れ知らずの打撃者"] };
+  if (averageScore >= 50) return { rank: "過労キーボード", id: 50, caption: rankCaptions["過労キーボード"] };
+  if (averageScore >= 40) return { rank: "叩きのバイト", id: 40, caption: rankCaptions["叩きのバイト"] };
+  if (averageScore >= 30) return { rank: "キーボードの苦痛", id: 30, caption: rankCaptions["キーボードの苦痛"] };
+  if (averageScore >= 20) return { rank: "破壊の見習い", id: 20, caption: rankCaptions["破壊の見習い"] };
+  return { rank: "壊れた希望", id: 10, caption: rankCaptions["壊れた希望"] };
 }
 
 const rankCaptions = {
