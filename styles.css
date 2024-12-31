@@ -189,7 +189,7 @@ body {
     color: #171715;
 }
 
-#result-screen .rank-image {
+.rank-image {
     width: 100%;
     margin-bottom: 24px;
 }
@@ -202,7 +202,7 @@ body {
     text-align: center;
 }
 
-#result-screen .caption {
+.caption {
     font-family: 'DotGothic16', sans-serif; /* 日本語フォント */
     font-size: 16px;
     font-weight: normal;
@@ -224,4 +224,71 @@ body {
     font-size: 12px;
     color: #171715;
     margin: 0 0 8px;
+}
+
+
+/* 強調されたブルブルアニメーション */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10% {
+        transform: translateX(-15px);
+    }
+    20% {
+        transform: translateX(15px);
+    }
+    30% {
+        transform: translateX(-10px);
+    }
+    40% {
+        transform: translateX(10px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    60% {
+        transform: translateX(5px);
+    }
+    70% {
+        transform: translateX(-3px);
+    }
+    80% {
+        transform: translateX(3px);
+    }
+    90% {
+        transform: translateX(-1px);
+    }
+}
+
+/* アニメーション適用クラス */
+.shake {
+    animation: shake 0.3s cubic-bezier(0.4, 0.1, 0.6, 1);
+}
+
+/* Deleteキーの基本的なアニメーション */
+.destroy {
+    animation: none; /* JavaScriptで動的に適用 */
+    will-change: transform; /* 性能向上 */
+}
+
+/* ドットの基本スタイル */
+.dot {
+    position: absolute;
+    width: 5px; /* ドットサイズ */
+    height: 5px;
+    background-color: #171715; /* ゲームボーイ風の黒色 */
+    animation: explode 0.8s ease-out forwards;
+}
+
+/* 砕け散るアニメーション */
+@keyframes explode {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy));
+        opacity: 0;
+    }
 }
