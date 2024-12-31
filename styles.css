@@ -18,7 +18,7 @@ body {
 /* ボタン */
 .buttonArea {
     position: absolute;
-    bottom: 24px;
+    bottom: 20px;
     left: 0;
     width: 100%;
     display: flex;
@@ -83,12 +83,17 @@ a.button {
 .screen-inner {
     max-width: 375px;
     width: 100%;
-    height: 607px;
+    height: 572px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 20px;
     border: 2px solid #171715;
     box-sizing: border-box;
     position: relative;
+}
+@media screen and (max-height: 639px) {
+    .screen-inner {
+        height: 500px;
+    }
 }
 
 .screen-title {
@@ -100,6 +105,12 @@ a.button {
 .logo {
     width: 100%;
     height: auto;
+}
+@media screen and (max-height: 639px) {
+    .logo {
+        width: 64%;
+        height: auto;
+    }
 }
 
 /* 副題 */
@@ -211,21 +222,21 @@ a.button {
 }
 
 /* 結果画面 */
-#result-screen h1 {
-    font-family: 'DotGothic16', sans-serif; /* 日本語フォント */
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #171715;
-}
 
 .rank-image {
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+}
+@media screen and (max-height: 639px) {
+    .rank-image {
+        width: 64%;
+        margin-bottom: 8px;
+    }
 }
 
 #result-screen .title {
-    margin: 0 0 8px;
-    font-size: 32px;
+    margin: 0 0 4px;
+    font-size: 28px;
     font-weight: bold;
     color: #171715;
     text-align: center;
@@ -237,7 +248,7 @@ a.button {
     font-weight: normal;
     color: #171715;
     text-align: center;
-    margin: 0 0 16px;
+    margin: 0 0 8px;
 }
 
 .score-display {
@@ -245,14 +256,14 @@ a.button {
     font-size: 18px;
     font-weight: bold;
     color: #171715;
-    margin: 0 0 6px;
+    margin: 0 0 4px;
 }
 
 .time-display {
     font-family: 'DotGothic16', sans-serif; /* 日本語フォント */
     font-size: 12px;
     color: #171715;
-    margin: 0 0 8px;
+    margin: 0 0 4px;
 }
 
 
