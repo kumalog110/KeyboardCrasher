@@ -1,0 +1,21 @@
+{
+    "name": "キーボードクラッシャー",
+    "short_name": "タイピングゲーム",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#ccd0af",
+    "theme_color": "#171715",
+    "description": "キーボードを叩いてタイピング速度を競う新感覚ゲーム！",
+    "icons": [
+      {
+        "src": "icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
