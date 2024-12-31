@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キーボードクラッシャー - タイピングゲーム</title>
+
+    <!-- Meta Description -->
+    <meta name="description" content="キーボードを叩いてタイピング速度を競う新感覚ゲーム！あなたのランクは？壊れた希望から仕事を救いし英雄まで、全10段階の称号に挑戦しよう！">
+
+    <!-- Meta Keywords -->
+    <meta name="keywords" content="タイピングゲーム, キーボードクラッシャー, タイピング速度, ゲーム, ランク, 称号, キーボード, タイピング練習">
+
+    <!-- Author -->
+    <meta name="author" content="kumakuma110">
+
+    <!-- Open Graph / OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="キーボードクラッシャー - タイピングゲーム">
+    <meta property="og:description" content="キーボードを叩いてタイピング速度を競う新感覚ゲーム！あなたのランクは？全10段階の称号に挑戦しよう！">
+    <meta property="og:image" content="https://yourwebsite.com/images/ogp-image.jpg">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:site_name" content="キーボードクラッシャー">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="キーボードクラッシャー - タイピングゲーム">
+    <meta name="twitter:description" content="タイピング速度を競い、ランクアップを目指せ！あなたの称号は何段階目？">
+    <meta name="twitter:image" content="https://yourwebsite.com/images/ogp-image.jpg">
+    <meta name="twitter:site" content="@kumakuma110">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/dotgothic16.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="start-screen" class="screen active">
+        <div class="screen-inner">
+            <!-- ロゴ -->
+            <h1 class="screen-title"><img src="logo.jpg" alt="キーボードクラッシャー" class="logo"></h1>
+
+            <!-- 副題 -->
+            <p class="subtitle">ただ叩けば、仕事できると思っている？<br>タイピングの極め方はあなた次第だ。</p>
+
+            <!-- トグルUI -->
+            <div id="toggle-container" class="toggle-container">
+            <span class="toggle-label">1問</span>
+            <div id="toggle-switch" class="toggle-switch">
+            <div id="toggle-thumb" class="toggle-thumb"></div>
+            </div>
+            <span class="toggle-label">10問</span>
+            </div>
+
+            <!-- スタートボタン -->
+            <button id="start-button" class="button">Start</button>
+        </div>
+    </div>
+
+    <div id="countdown-screen" class="screen hidden">
+        <div class="screen-inner">
+            <div id="countdown-number" class="countdown-number"></div>
+        </div>
+    </div>
+  
+    <div id="game-screen" class="screen hidden">
+        <div class="screen-inner">
+            <div class="background-animation"></div>
+            <div class="timer-container">
+                <span id="timer" class="timer">0.00</span>
+            </div>
+            <p id="progress-title" class="progress-title">1/10</p>
+            <div id="question-container">
+                <p id="question">この文章を正確に入力してください。</p>
+            </div>
+            <input type="text" id="answer" class="input" placeholder="ここに入力...">
+            <button id="submit-button" class="button">Submit</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="screen-inner">
+            <div id="result-content">
+                <img id="result-image" class="rank-image" src="" alt="Rank Image">
+                <p class="title"></p>
+                <p class="caption"></p>
+                <p class="score-display"></p>
+                <p class="time-display"></p>
+            </div>
+            <button id="restart-button" class="button">Retry</button>
+        </div>
+    </div>
+
+    <!-- 質問を読み込むスクリプト -->
+    <script src="questions.js"></script>
+    <!-- メインのスクリプト -->
+    <script src="script.js"></script>
+</body>
+</html>
